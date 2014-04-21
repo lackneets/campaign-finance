@@ -1,0 +1,8 @@
+body {
+  margin-top: 80px; }
+  body .rating i {
+    color: #CCC; }
+    body .rating i.fa-star {
+      color: #FFBF00; }
+    body .rating i.fa-star-half-o {
+      color: #FFBF00; }
