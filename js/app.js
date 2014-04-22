@@ -15,7 +15,7 @@ var CFinance = (function(){
 	function getTables(callback){ var s = this; return $.getJSON('http://campaign-finance.g0v.ronny.tw/api/gettables?callback=?', function(response){callback && callback.call(s, response.data, response.error); }); }
 	
 	// cellImage(id, row, col) : return url;
-	function cellImage(page, x, y){ return 'http://campaign-finance.g0v.ronny.tw/api/getcellimage/'+parseInt(page)+'/'+x+'/'+y+'.png'; }
+	function cellImage(page, row, col){ return 'http://campaign-finance.g0v.ronny.tw/api/getcellimage/'+parseInt(page)+'/'+row+'/'+col+'.png'; }
 
 	function splitFile(files){
 		_(files).each(function(f){
@@ -69,13 +69,13 @@ var CFinance = (function(){
 	}
 
 	CFinanceTable.prototype.buildTable = function(callback){
-		var rows = _(this.cells).groupBy(function(c){ return c.x; });
+		var rows = _(this.cells).groupBy(function(c){ return c.row; });
 		var table = $('<table/>');
 		table.append($('<thead><tr><th>序號</th><th>交易日期</th><th>收支科目</th><th>捐贈者/支出對象</th><th>身份證/統編</th><th>收入</th><th>支出</th><th>金錢類</th><th>地址</th></tr></thead>'));
 			for(var r=0;r<=21;r++){
 				var tr = $('<tr/>').appendTo(table);
 				if(rows[r]) for(var c=1;c<10;c++){
-					var col = _(rows[r]).findWhere({y:c});
+					var col = _(rows[r]).findWhere({col:c});
 					var val = (col && col.ans) || '';
 
 					// switch(c){
@@ -95,7 +95,7 @@ var CFinance = (function(){
 	function CFinanceCell(cellAttr, table){
 		_.extend(this, cellAttr);
 		this.table = table; 
-		this.image = cellImage(this.table.id, this.x, this.y);
+		this.image = cellImage(this.table.id, this.row, this.col);
 	}
 
 	// Public
