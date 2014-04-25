@@ -20,8 +20,14 @@ var CFinance = (function(){
 	function splitFile(files){
 		_(files).each(function(f){
 			if(!f.__CATEGORY__){
+				f.file = f.file.replace(/^([^\/]+)$/, '$1/所有檔案/default');
+				f.file = f.file.replace(/第\d+屆立法委員擬參選人/, '');
+				f.file = f.file.replace(/專戶-/, '專戶/');
+				f.file = f.file.replace(/(\d+)\/(\d+)\/(\d+)/g, '$1_$2_$3');
+				f.file = f.file.replace(/-(\d+)_(\d+)_(\d+)/, '/$1_$2_$3');
 				f.__CATEGORY__ = f.file.split('/');
-				f.__CATEGORY__.pop();				
+				f.__CATEGORY__.pop();
+				f.__CATEGORY__ = f.__CATEGORY__.splice(0,4);
 			}
 		});
 		var grouped = _(files).groupBy(function(f){
