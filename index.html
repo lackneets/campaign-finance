@@ -12,6 +12,15 @@
 
 	<title>政治獻金資料庫 - 國家自己救</title>
 
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=221258024717323";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	<script src="/static/js/index.js"></script>
+
 	<script type="text/javascript" src="js/jquery-2.0.2.min.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<script type="text/javascript"> $.widget.bridge('uitooltip', $.ui.tooltip); </script>
@@ -25,7 +34,7 @@
 
 	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" _href="css/style.css">
 	<!-- 
                                                            `ooo+                                    
                                                            o??!^                                    
@@ -143,8 +152,26 @@
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a target="_blank" href="http://campaign-finance.g0v.ronny.tw/">資料源</a></li>
-					<li><a target="_blank" href="http://campaign-finance.g0v.ctiml.tw/">數位化</a></li>
+					<!-- <li><a target="_blank" href="http://campaign-finance.g0v.ronny.tw/">資料源 Ronny</a></li> -->
+					<li class="dropdown">
+						<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">資料源<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="http://campaign-finance.g0v.ronny.tw/" target="_blank">Ronny Wang</a></li>
+						</ul>
+					</li>
+					<!-- <li><a target="_blank" href="http://campaign-finance.g0v.ctiml.tw/">數位化</a></li> -->
+					<li class="dropdown">
+						<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">數位化<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="http://campaign-finance.g0v.ctiml.tw/" target="_blank">Ctiml</a></li>
+							<li class="divider"></li>
+							<li><a href="http://campaign-finance.g0v.ctiml.tw/cell" target="_blank">+1鍵盤手</a></li>
+							<li><a href="http://bit.ly/PoliticalContribution" target="_blank">參戰須知</a></li>
+							<li><a href="http://bit.ly/CYsunshinetodo" target="_blank">認領任務</a></li>
+							<li><a href="http://bit.ly/UploadPoliticalContribution" target="_blank">上船圖檔</a></li>
+							<li><a href="http://bit.ly/ScanPoliticalContribution" target="_blank">處理現況</a></li>
+						</ul>
+					</li>
 					<li>
 						<a target="_blank" href="https://github.com/lackneets/campaign-finance" alt="Fork me on Github">
 							<img src="http://www.iconsdb.com/icons/download/color/CCCCCC/github-11-24.png" style="height:20px"/>
@@ -222,7 +249,20 @@
 			</div>
 		</div> 
 
+		<hr>
+
+		<div class="text-center">
+			<div style="margin:auto" class="fb-like-box" data-href="https://www.facebook.com/cy.sunshine" data-width="940" data-height="180" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="false"></div>
+		</div>
+
+		<div id="fb-root"></div>
+
+
 
 	</div><!-- /.container -->
+
+	<p></p>
+
+
 </body>
 </html>
