@@ -20,12 +20,23 @@ var CFinance = (function(){
 	function splitFile(files){
 		_(files).each(function(f){
 			if(!f.__CATEGORY__){
-				f.file = f.file.replace(/^([^\/]+)$/, '$1/所有檔案/default');
-				f.file = f.file.replace(/第\d+屆立法委員擬參選人/, '');
-				f.file = f.file.replace(/專戶-/, '專戶/');
-				f.file = f.file.replace(/(\d+)\/(\d+)\/(\d+)/g, '$1_$2_$3');
-				f.file = f.file.replace(/-(\d+)_(\d+)_(\d+)/, '/$1_$2_$3');
-				f.__CATEGORY__ = f.file.split('/');
+				//第N屆OOO參選人XXXXXX政治獻金專戶-{帳戶}-{時間區間:Y/m/d-Y/m/d}
+				//f.file = f.file.replace(/^([^\/]+)$/, '$1/所有檔案/default');
+
+				f.file = f.file.replace(/-([\?]+)\/([\?]+)\/([\?]+)-([\?]+)\/([\?]+)\/([\?]+)/g, '-未確定資料日期');
+				f.file = f.file.replace(/-[^\/\-]+\.pdf$/, '-[未分類帳戶]-未確定資料日期');
+				f.file = f.file.replace(/專戶$/, '專戶-[未分類帳戶]-未確定資料日期');
+
+				var pattern = new RegExp(/^(第\d+[屆任]?)(.*?)(擬?參選人)(.+)政治獻金專戶-([^-]+)-?(.+)?$/);
+
+				f.number = f.file.replace(pattern, '$1'); //第N任
+				f.title = f.file.replace(pattern, '$2');
+				f.people = f.file.replace(pattern, '$4');
+				f.date = f.file.replace(pattern, '$6');
+
+				f.file = f.file.replace(pattern, '$4|$5|$6');
+
+				f.__CATEGORY__ = f.file.split('|');
 				f.__CATEGORY__.pop();
 				f.__CATEGORY__ = f.__CATEGORY__.splice(0,4);
 			}
@@ -42,6 +53,7 @@ var CFinance = (function(){
 
 		return {
 			files: flat,
+			allFiles: files,
 			totalFiles: _(files).size(),
 			categories: children
 		};
@@ -182,7 +194,10 @@ var CFTable = Backbone.View.extend(
 				var li = this.$el.find('#filesList li.template:first').clone().removeClass('template');
 
 				_.each(this.cf.arrangedFiles.categories, function(cat1, cat1Title){
-					var ll = li.clone().appendTo(self.$el.find('#filesList .nav')).find('a').text(cat1Title).append($('<span class="badge" style="margin-left:5px">'+cat1.totalFiles+'</span>')).end();
+					var ll = li.clone().appendTo(self.$el.find('#filesList .nav')).find('a').text(cat1Title).append([
+						$('<span class="badge" style="margin-left:5px">'+cat1.totalFiles+'</span>'),
+						$('<div class="political-title">'+cat1.allFiles[0].number + cat1.allFiles[0].title+'</div>'),
+					]).end();
 					ll.click(function(){
 						self.renderCategory.call(self, cat1.categories);
 					});
@@ -208,7 +223,7 @@ var CFTable = Backbone.View.extend(
 
 					var p = _panel.clone()
 					p.find(".collapse").removeClass("in").on('show.bs.collapse', function(){ self.renderTable(this, currentPage) });
-					p.find(".panel-title a").attr("href",  "#cf" + (++hash)).text(catTitle);
+					p.find(".panel-title a").attr("href",  "#cf" + (++hash)).text(catTitle).append($('<small/>',{text: cat.allFiles[0].date, css: {'margin-left': '10px'} }));
 					p.find(".panel-title").append(pager);
 					p.find(".panel-collapse").attr("id", 'cf'+hash).addClass("collapse").removeClass("in");
 					p.find('.panel-body').text('....').end()
