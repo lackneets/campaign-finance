@@ -6,7 +6,7 @@ G0V.CFinance = G0V.CFinance || {};
 var CFinance = (function(){
 
 	// getTotalCount(callback) : callback(count)
-	function getTotalCount(callback){ var s = this; return $.getJSON('http://campaign-finance.g0v.ctiml.tw/api/getcellcount?callback=?', function(response){callback && callback.call(s, response.count); }); }
+	function getTotalCount(callback){ var s = this; return $.getJSON('http://campaign-finance.g0v.ctiml.tw/api/getcellcount?callback=?', function(response){callback && callback.call(s, parseInt(response.count), parseInt(response.count)-parseInt(response.todo),  parseInt(response.todo)); }); }
 
 	// getTable(id, callback) : callback(tables, meta)
 	function getTable(id, callback){ var s = this; return $.getJSON('http://campaign-finance.g0v.ronny.tw/api/tables/'+parseInt(id)+'?callback=?', function(response){callback && callback.call(s, response.data.tables, response.data.meta); }); }
@@ -131,25 +131,27 @@ var CFTable = Backbone.View.extend(
 		//var cf = new CFinance();
 
 		(function refreshCounter(){
-			var interval = 5000;
+			var interval = 3000;
 			var current = 0;
+			var total = 0;
 			var history = 0;
 			var increment = 0;
 			var timer;
 			(function renew(){
-				CFinance.getTotalCount(function(count){
-					count = parseInt(count);
+				CFinance.getTotalCount(function(total, done, remains){
+					var percent = Math.ceil(done*100 / total) + '%';
+					var count = done;
 					clearInterval(timer);
 					if(history){
 						increment = count-history; 
 						timer = setInterval(function(){
 							current += increment/(interval/80);
-							$('#counter').text(Math.ceil(current));
+							$('#counter').text(Math.ceil(current) + ' / ' + percent).attr('title', '還有 ' + remains + ' 格資料未輸入，共：'+total);
 						}, 100);
 					}
 
 					if(count >= current) {
-						$('#counter').text(count);
+						$('#counter').text(count + ' / ' + percent).attr('title', '還有 ' + remains + ' 格資料未輸入，共：'+total);
 					}
 					history = count;
 					current = count;
