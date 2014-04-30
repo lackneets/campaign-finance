@@ -1,0 +1,226 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:title" content="政治獻金數位化計畫，政府無能靠我們救"/>
+	<meta property="og:image" content="http://i.imgur.com/pe4rmGD.png"/>
+	<meta property="og:site_name" content="G0V零時政府後援"/>
+	<meta property="og:description" content="「上次 g0v 黑客松，有 NGO 帶著去監察院申請出來的幾名政治人物的政治獻金的掃描檔，想問問看 g0v 能怎麼做
+一共有 94 個檔案，將近 2800 頁，包含馬英九、顏清標、吳育昇、丁守中等人的政治獻金的各種收入、支出登記資料......」"/>
+
+	<title>政治獻金資料庫 - 國家自己救</title>
+
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=221258024717323";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+	</script>
+
+
+	<script type="text/javascript" src="/js/jquery-2.0.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script type="text/javascript"> $.widget.bridge('uitooltip', $.ui.tooltip); </script>
+	<script type="text/javascript" src="/js/underscore-min.js"></script>
+	<script type="text/javascript" src="/js/backbone-min.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="/js/bootstrap-paginator.js"></script>
+	<script type="text/javascript" src="/js/lackneets.google-spreadsheet.js"></script>
+	<script type="text/javascript" src="/js/lackneets.ui.rating.js"></script>
+	<script type="text/javascript" src="/js/app.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<!-- 
+                                                           `ooo+                                    
+                                                           o??!^                                    
+                                                          +???-                                     
+                                                         _???;                                      
+                                                        .!??o                                       
+                                                        e??e`                                       
+                                                       i???.                                        
+                                                      ;???_                                         
+                                                     -???+                                          
+              .+*?$####O%!i:^              -i!%O###O%OO%*        .----              ^----           
+            :$@@@@@@@@@@@@@@@!           i#@@@@@@@@@@@@@$:       -@@@@=             O@@@*           
+           o@@@@@@@@@@@@@@@@@%         `$@@@@@@@&#&@@@@@@@*       o@@@&.           *@@@O            
+          +@@@@Oo:~^^^^~_+*%@%         ?@@@&e_^   :?%$$@@@@+       $@@@%          _@@@@-            
+          #@@@*             `-        _@@@&~     .???i ;@@@#       ~&@@@i        `O@@@i             
+         -@@@O                        *@@@=     `!??*   e@@@_       =@@@&~       e@@@%              
+         +@@@*    .***********i       %@@@~     o??!^   ;@@@=        ?@@@$      _@@@&.              
+         =@@@i    _@@@@@@@@@@@O       $@@@^    +???-    :@@@i        ^&@@@i    `#@@@+               
+         ;@@@*    _@@@@@@@@@@@$       %@@@-   _???;     +@@@+         ;@@@@~   e@@@?                
+         ~@@@O     ```````^$@@?       *@@@*  .!??o      ?@@@-          !@@@$  :@@@#^                
+          O@@@e           ~&@@o       -@@@@=`e??e`     o@@@#           `#@@@o^#@@@:                 
+          :@@@@#*;-...~-+e&@@@~        !@@@@&#$$:.~-;*#@@@@;            _@@@@$@@@e                  
+           =@@@@@@@@@@@@@@@@@=          ?@@@@@@@@@@@@@@@@@=              *@@@@@@O`                  
+            -?@@@@@@@@@@@@@$_            ;O@@@@@@@@@@@@@?-                $@@@@@-                   
+              ^:i!?$$$%?*+~              ^!%$%!%$$$?ei:^                  .++++_                    
+                                         *??!`                                                      
+                                        =???~                                                       
+                                       :???:                                                        
+                                      ~???i                                                         
+                                     `!??e                                                          
+                                     o??!^                                                          
+                                    +???-                                                           
+                                   _???+                                                            
+                                  `o**=                                                             
+                                                                                           
+
+	 -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-23775887-3');
+		ga('send', 'pageview');
+	</script>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" style="cursor:pointer"></a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<!-- <li><a target="_blank" href="http://campaign-finance.g0v.ronny.tw/">資料源 Ronny</a></li> -->
+					<li class="dropdown">
+						<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">資料源<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="http://campaign-finance.g0v.ronny.tw/" target="_blank">Ronny Wang</a></li>
+							<li class="divider"></li>
+							<li><a href="http://www.ptt.cc/bbs/FuMouDiscuss/M.1397882589.A.B9F.html" target="_blank">g0v黑客松提案！網友合力監督政治獻金</a></li>
+						</ul>
+					</li>
+					<!-- <li><a target="_blank" href="http://campaign-finance.g0v.ctiml.tw/">數位化</a></li> -->
+					<li class="dropdown">
+						<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">數位化<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="http://campaign-finance.g0v.ctiml.tw/" target="_blank">Ctiml</a></li>
+							<li class="divider"></li>
+							<li><a href="http://campaign-finance.g0v.ctiml.tw/cell" target="_blank">+1鍵盤手</a></li>
+							<li><a href="http://bit.ly/PoliticalContribution" target="_blank">參戰須知</a></li>
+							<li><a href="http://bit.ly/CYsunshinetodo" target="_blank">認領任務</a></li>
+							<li><a href="http://bit.ly/UploadPoliticalContribution" target="_blank">上船圖檔</a></li>
+							<li><a href="http://bit.ly/ScanPoliticalContribution" target="_blank">處理現況</a></li>
+						</ul>
+					</li>
+					
+					
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="visible-sm visible-md visible-lg" style="margin-top:3px" title="總建檔資料格數">
+						<a><span class="label label-success" id="counter">-</span></a>
+					</li>
+					<li title="Fork me on Github">
+						<a target="_blank" href="https://github.com/lackneets/campaign-finance" alt="Fork me on Github">
+							<img src="http://www.iconsdb.com/icons/download/color/CCCCCC/github-11-24.png" style="height:20px"/>
+							<span class="hidden-sm hidden-md hidden-lg">Fork me on Github </span>
+						</a>
+					</li>
+				</ul>
+				
+			</div><!--/.nav-collapse -->
+		</div>
+	</div>
+
+
+	<div class="container">
+
+
+		<!-- <div class="Jumbotron">
+			<h4><a href="http://zh.wikipedia.org/zh-tw/%E6%94%BF%E6%B2%BB%E7%8C%AE%E9%87%91" target="_blank">政治獻金是啥？</a></h4>
+			<h3>感謝強大的鄉民鍵盤手，目前已經有 <span class="label label-default" id="counter">-</span> 格建檔資料。<a href="http://campaign-finance.g0v.ctiml.tw/cell" target="_blank">台灣的未來靠我們救！</a></h3>
+		</div> -->
+
+		<div style="margin-top:80px"></div>
+
+		<div class="alert alert-info">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			本站政治獻金資料收集僅供學術交流使用，嚴禁營利、徵信，或其他不正當目的之使用
+		</div>
+		
+		<div id="loading" class="text-center">
+			<img src="images/loading_icon.gif"><p></p>
+			<img src="images/money_fly.gif" style="width: 200px; height: auto;">
+			
+		</div>	
+		<div class="row" id="main" style="display:none;">
+			
+			<div class="col-sm-3">
+				<div class="sidebar-nav" id="politician">
+					<div class="navbar navbar-default" role="navigation">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<span class="visible-xs navbar-brand">政治獻金專戶</span>
+						</div>
+						<div class="navbar-collapse collapse sidebar-navbar-collapse">
+							<ul class="nav navbar-nav">
+								<li class="template"><a style="cursor: pointer;">Menu Item 1</a></li>
+								<li class="dropdown template">
+									<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">馬英九 <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a href="">匿名捐贈</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div><!--/.nav-collapse -->
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="panel-group" id="categoriesFiles">
+					<div class="panel panel-default template">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+									...
+								</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in">
+							<div class="panel-body">
+								...
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div> 
+
+		<hr>
+
+		<div class="text-center">
+			<div style="margin:auto" class="fb-like-box" data-href="https://www.facebook.com/cy.sunshine" data-width="940" data-height="180" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="false"></div>
+		</div>
+
+		<div id="fb-root"></div>
+
+
+
+	</div><!-- /.container -->
+
+	<p></p>
+
+
+</body>
+</html>
