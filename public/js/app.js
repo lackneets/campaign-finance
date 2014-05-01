@@ -246,7 +246,8 @@ var CFTable = Backbone.View.extend(
 				'click #getLocation': 'returnMyLocation',
 				'click #politician li': 'selectPolitician',
 				'change select.file-page': 'selectFile',
-				'shown.bs.collapse .collapse': 'showCategoryPage'
+				'shown.bs.collapse .collapse': 'showCategoryPage',
+				'click a[href="/"]' : 'home'
 			},
 
 			el: 'body',
@@ -277,10 +278,16 @@ var CFTable = Backbone.View.extend(
 
 			},
 
-			home: function(){
+			home: function(ev){
+				this.state.politician = null;
+				this.state.file = null;
+				this.state.page_id = null;
+				this.pushState();
 				this.$el.find('#home').show();
 				this.$el.find('#categoriesFiles').hide();
 				this.$el.find('#politician li').removeClass('active');
+				ev && ev.preventDefault();
+				return false;
 			},
 
 			avoidHashing: function (ev) {
@@ -369,16 +376,20 @@ var CFTable = Backbone.View.extend(
 				});
 			},
 			pushState: function () {
+
 				// prevent the same page
 				if(history.state && history.state.page_id == this.state.page_id) {
 					return
 				}
 
-				// console.trace('push')
-				// console.log('pushState', _.clone(this.state));
+				if(this.getCurrentPath()){
+					history.pushState(this.state, '', '/view' + this.getCurrentPath());
+					ga && ga('send', 'pageview', '/view' + this.getCurrentPath());
+				}else{
+					history.pushState(this.state, '', '/');
+					ga && ga('send', 'pageview', '/');
+				}
 
-				this.getCurrentPath() && history.pushState(this.state, '', '/view' + this.getCurrentPath());
-				this.getCurrentPath() && ga && ga('send', 'pageview', this.getCurrentPath());
 				// https://developers.google.com/analytics/devguides/collection/analyticsjs/pages
 			},
 			getCurrentPath: function () {
@@ -401,11 +412,6 @@ var CFTable = Backbone.View.extend(
 				return path;
 			},
 
-			// render: function () {
-			// 	this.renderCategory();
-			// 	this.renderPageTable();
-			// 	this.pushState();
-			// },
 
 			showCategoryPage: function (ev) {
 				this.state.file = ev.currentTarget.getAttribute('data-file');
