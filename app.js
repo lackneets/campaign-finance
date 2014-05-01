@@ -33,7 +33,7 @@ app.use(function(req, res, next) {
 	next();
 });
 app.use(app.router);
-app.use(express.staticCache()); 
+//app.use(express.staticCache()); 
 app.use(express.static(path.join(__dirname, 'public')));
 
 
