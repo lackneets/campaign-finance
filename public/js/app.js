@@ -259,11 +259,6 @@ var CFTable = Backbone.View.extend(
 				this.state.page = null;
 				this.state.page_id = page_id && null;
 
-				this.$el.find('#politician li').filter(function () {
-					return this.getAttribute('data-politician') == politician
-				}).siblings().removeClass('active').end().addClass('active');
-
-				this.$el.find('#politician .collapse').collapse('hide');
 
 				this.pushState();
 				this.renderCategory();
@@ -271,7 +266,7 @@ var CFTable = Backbone.View.extend(
 
 			selectFile: function (file, page_id) {
 
-				this.state.file = (file.currentTarget) ? file.currentTarget.getAttribute('data-file') : file;
+				this.state.file = (file && file.currentTarget) ? file.currentTarget.getAttribute('data-file') : file;
 				this.state.page_id = page_id || ((file.currentTarget) && parseInt(file.currentTarget.value));
 
 				if (!this.state.page_id) {
@@ -288,10 +283,16 @@ var CFTable = Backbone.View.extend(
 
 			navigate: function (path) {
 				var option = path.replace(/(^\/*|\/*$)/g, '').split('/');
-				option[0] && this.selectPolitician(option[0]);
-				option[1] && this.selectFile(option[1], parseInt(option[2]) || null);
+				//option[0] && this.selectPolitician(option[0]);
+				//option[1] && this.selectFile(option[1], parseInt(option[2]) || null);
 				// && (this.state.id = parseInt(option[2]))
 				//this.render();
+
+				this.state.politician = option[0] || null;
+				this.state.file = option[1] || null;
+				this.state.page_id = (parseInt(option[2])) || null;
+				this.renderCategory();
+				this.renderPageTable();
 			},
 
 			initPolitician: function () {
@@ -321,6 +322,10 @@ var CFTable = Backbone.View.extend(
 				});
 			},
 			pushState: function () {
+				// prevent the same page
+				if(history.state && history.state.page_id == this.state.page_id) {
+					return
+				}
 				this.getCurrentPath() && history.pushState(this.state, '', '/view' + this.getCurrentPath());
 				this.getCurrentPath() && ga && ga('send', 'pageview', this.getCurrentPath());
 				// https://developers.google.com/analytics/devguides/collection/analyticsjs/pages
@@ -365,6 +370,14 @@ var CFTable = Backbone.View.extend(
 				if (!this.state.politician) {
 					return false;
 				}
+
+				// render politician selection
+				this.$el.find('#politician li').filter(function () {
+					return this.getAttribute('data-politician') == self.state.politician
+				}).siblings().removeClass('active').end().addClass('active');
+				//hide politician menu
+				this.$el.find('#politician .collapse').collapse('hide');
+
 
 				// Clean FilesView
 				this.$el.find('#categoriesFiles > *:not(.template)').remove();
@@ -426,8 +439,10 @@ var CFTable = Backbone.View.extend(
 					return this.getAttribute('data-file') == self.state.file
 				});
 
+
 				// prevent double rendering
 				if (container[0].getAttribute('data-file') == self.state.file && parseInt(container[0].getAttribute('data-page_id')) == self.state.page_id) {
+					container.collapse('show');
 					return false;
 				}
 
