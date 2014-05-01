@@ -70,7 +70,7 @@ var CFinance = (function () {
 	CFinance.prototype.where = function (cond) {
 		return _(this.pages).where(cond);
 	},
-	
+
 
 	CFinance.prototype.getTable = function (id) {
 		return _(this.files).chain().flatten().findWhere({
@@ -305,6 +305,18 @@ var CFTable = Backbone.View.extend(
 						$('<span class="badge" style="margin-left:5px">' + _(pages).size() + '</span>'),
 						$('<div class="political-title">' + pages[0].title + '</div>'),
 					]).end().attr('data-politician', politicianName);
+
+					var oneName = politicianName.split(/[、\s\,]/)[0];
+
+					$.get('/api/partyInfo/' + oneName, function(res){
+						if(res.party){
+							$('<img/>', {
+								title: res.party,
+								css: {'margin-right': '5px'},
+								src: res.partyImg
+							}).prependTo(self.politicianMenu[politicianName].find('a'))
+						}
+					})
 
 				});
 			},

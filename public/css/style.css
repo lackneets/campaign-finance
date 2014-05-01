@@ -55,7 +55,8 @@ td img {
   color: #555; }
 
 body {
-  background-image: url("/images/geometry.png"); }
+  background-image: url("/images/geometry.png");
+  overflow-x: hidden; }
 
 .nav a {
   font-size: 15px;
@@ -72,3 +73,12 @@ body {
 #politician .political-title {
   font-size: 12px;
   color: #AAA; }
+
+#politician li a img {
+  max-height: 25px;
+  vertical-align: middle; }
+@media all and (min-width: 768px) {
+  #politician li a {
+    padding: 6px 3px; }
+  #politician li a img {
+    max-height: 16px; } }

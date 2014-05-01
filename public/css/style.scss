@@ -63,6 +63,8 @@ td img{max-width: 200px; max-height: 80px;}
 
 body {
 	background-image: url('/images/geometry.png');
+	overflow-x:hidden; 
+
 }
 
 .nav a {
@@ -78,6 +80,8 @@ body {
 	max-height: none;
 }
 
+
+
 #politician {
 	li a {
 		color: #333;
@@ -85,6 +89,16 @@ body {
 	.political-title {
 		font-size: 12px;
 		color: #AAA;
+	}
+}
+#politician{
+	li a img{
+		max-height:25px;
+		vertical-align:middle;
+	}
+	@media all and (min-width: 768px) {
+		li a{padding:6px 3px;}
+		li a img{max-height:16px;}
 	}
 }
 

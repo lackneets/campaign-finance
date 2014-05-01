@@ -11,6 +11,7 @@ var path = require('path');
 
 var app = express();
 
+var api = require('./routes/api');
 
 var cons = require('consolidate');
 // assign the swig engine to .html files
@@ -45,7 +46,7 @@ if ('development' == app.get('env')) {
 app.get('/?', routes.index);
 app.get('/view/:politician?/:file?/:page?', routes.index);
 app.get('/api/gettables', routes.gettables);
-
+app.get('/api/partyInfo/:query', api.partyInfo);
 //app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
