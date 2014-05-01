@@ -277,6 +277,12 @@ var CFTable = Backbone.View.extend(
 
 			},
 
+			home: function(){
+				this.$el.find('#home').show();
+				this.$el.find('#categoriesFiles').hide();
+				this.$el.find('#politician li').removeClass('active');
+			},
+
 			avoidHashing: function (ev) {
 				if (ev.currentTarget.href = '#') {
 					ev.preventDefault();
@@ -299,6 +305,10 @@ var CFTable = Backbone.View.extend(
 
 			selectFile: function (file, page_id) {
 
+				if(!file){
+					return false;
+				}
+
 				this.state.file = (file && file.currentTarget) ? file.currentTarget.getAttribute('data-file') : file;
 				this.state.page_id = page_id || ((file && file.currentTarget) && parseInt(file.currentTarget.value));
 
@@ -320,6 +330,10 @@ var CFTable = Backbone.View.extend(
 				//option[1] && this.selectFile(option[1], parseInt(option[2]) || null);
 				// && (this.state.id = parseInt(option[2]))
 				//this.render();
+
+				if(path == '/' || path == ''){
+					this.home();
+				}
 
 				this.state.politician = option[0] || null;
 				this.state.file = option[1] || null;
@@ -359,6 +373,10 @@ var CFTable = Backbone.View.extend(
 				if(history.state && history.state.page_id == this.state.page_id) {
 					return
 				}
+
+				// console.trace('push')
+				// console.log('pushState', _.clone(this.state));
+
 				this.getCurrentPath() && history.pushState(this.state, '', '/view' + this.getCurrentPath());
 				this.getCurrentPath() && ga && ga('send', 'pageview', this.getCurrentPath());
 				// https://developers.google.com/analytics/devguides/collection/analyticsjs/pages
@@ -411,6 +429,9 @@ var CFTable = Backbone.View.extend(
 				//hide politician menu
 				this.$el.find('#politician .collapse').collapse('hide');
 
+				//hide home
+				this.$el.find('#home').hide();
+				this.$el.find('#categoriesFiles').show();
 
 				// Clean FilesView
 				this.$el.find('#categoriesFiles > *:not(.template)').remove();
