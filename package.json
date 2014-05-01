@@ -1,12 +1,27 @@
 {
-  "name": "application-name",
+  "name": "campaign-finance",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
+    "jquery" : "1.8.3",
+    "underscore" : "*",
+    "consolidate" : "*",
     "express": "3.4.0",
     "jade": "*"
+  },
+  "description": "政治獻金數位化 - 資料統整 & 應用 Project ==============",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lackneets/campaign-finance.git"
+  },
+  "author": "Lackneets",
+  "license": "CC-NC-ND",
+  "bugs": {
+    "url": "https://github.com/lackneets/campaign-finance/issues"
   }
 }
