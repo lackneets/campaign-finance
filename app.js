@@ -16,6 +16,8 @@ var cons = require('consolidate');
 // assign the swig engine to .html files
 app.engine('html', cons.underscore);
 
+
+
 // all environments
 app.set('port', process.env.PORT || 5566);
 app.set('views', __dirname + '/views');
@@ -24,8 +26,16 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
+app.use(express.compress());  
+app.use(function(req, res, next) {
+	res.locals.request = req;
+	res.locals.response = res;
+	next();
+});
 app.use(app.router);
+app.use(express.staticCache()); 
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // development only
 if ('development' == app.get('env')) {
