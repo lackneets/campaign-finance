@@ -300,7 +300,7 @@ var CFTable = Backbone.View.extend(
 			selectFile: function (file, page_id) {
 
 				this.state.file = (file && file.currentTarget) ? file.currentTarget.getAttribute('data-file') : file;
-				this.state.page_id = page_id || ((file.currentTarget) && parseInt(file.currentTarget.value));
+				this.state.page_id = page_id || ((file && file.currentTarget) && parseInt(file.currentTarget.value));
 
 				if (!this.state.page_id) {
 					var pages = this.cf.where({
