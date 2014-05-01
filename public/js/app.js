@@ -177,7 +177,7 @@ var CFTable = Backbone.View.extend(
 		//var cf = new CFinance();
 
 		(function refreshCounter() {
-			var interval = 3000;
+			var interval = 4000;
 			var current = 0;
 			var total = 0;
 			var history = 0, incrementBuffer = 0;
@@ -212,6 +212,7 @@ var CFTable = Backbone.View.extend(
 					if (history) {
 						increment = count - history;
 						timer = setInterval(function () {
+							
 							current += increment / (interval / 80);
 							incrementBuffer+= increment / (interval / 80);
 
@@ -230,8 +231,9 @@ var CFTable = Backbone.View.extend(
 						history && up && numberUpEffect(up);
 						$('#counter').text(count + ' / ' + percent).attr('title', '還有 ' + remains + ' 格資料未輸入，共：' + total);
 					}
-					history = count;
-					current = count;
+
+					history = Math.ceil(Math.max(count, current));
+					current = Math.ceil(Math.max(count, current));
 					setTimeout(renew, interval);
 				});
 			})()
