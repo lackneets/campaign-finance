@@ -52,17 +52,14 @@ exports.partyInfo = function (req, res) {
 	function follow(href) {
 		//cancel GC task
 		clearTimeout(gcTimer);
-		$.ajax({
-			url: href,
-			dataType: 'text',
-			success: function (html) {
-				parse(html);
-			},
-			error: function (err) {
+		request(href, function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				parse(body);
+			}else{
 				res.json({
 					error: 1,
-					message: err
-				})
+					message : 'API proxy get a response code of ' + response.statusCode
+				});
 			}
 		});
 	}
