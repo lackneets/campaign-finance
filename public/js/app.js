@@ -180,9 +180,30 @@ var CFTable = Backbone.View.extend(
 			var interval = 3000;
 			var current = 0;
 			var total = 0;
-			var history = 0;
+			var history = 0, incrementBuffer = 0;
 			var increment = 0;
 			var timer;
+
+			function numberUpEffect(n){
+				$('#counter').css('position', 'relative')
+				return $('<span/>', {
+					text: '+' + n,
+					css: {
+						'color' : '#FF4500',
+						'font-famiy' : 'Arial Black',
+						'font-weight' : 'bold',
+						'position':'absolute',
+						'left' : 5 + Math.random()*80,
+						'top' : 35 - Math.random()*5
+					}
+				}).insertAfter('#counter').animate({
+					top: '-=45' ,
+					opacity: 0
+				}, 1000, 'easeInQuad', function(){
+					$(this).remove();
+				});
+			}
+
 			(function renew() {
 				CFinance.getTotalCount(function (total, done, remains) {
 					var percent = Math.ceil(done * 100 / total) + '%';
@@ -192,11 +213,21 @@ var CFTable = Backbone.View.extend(
 						increment = count - history;
 						timer = setInterval(function () {
 							current += increment / (interval / 80);
+							incrementBuffer+= increment / (interval / 80);
+
+							if(incrementBuffer>=1){
+								var up = Math.floor(incrementBuffer);
+								incrementBuffer-=up;
+								numberUpEffect(up);
+							}
+
 							$('#counter').text(Math.ceil(current) + ' / ' + percent).attr('title', '還有 ' + remains + ' 格資料未輸入，共：' + total);
 						}, 100);
 					}
 
-					if (count >= current) {
+					if (count >= Math.ceil(current)) {
+						var up = count - Math.ceil(current);
+						history && up && numberUpEffect(up);
 						$('#counter').text(count + ' / ' + percent).attr('title', '還有 ' + remains + ' 格資料未輸入，共：' + total);
 					}
 					history = count;
