@@ -2,6 +2,8 @@ var gc = require('gc');
 var jsdom = require('jsdom');
 var dirty = require('dirty');
 
+var request = require('request');
+
 // jQuery
 var $;
 var window = jsdom.jsdom().parentWindow;
@@ -64,5 +66,37 @@ exports.partyInfo = function (req, res) {
 			}
 		});
 	}
+};
 
+
+var cache = {};
+exports.gettables = function(req, res){
+
+	res.header('Content-type','application/json');
+	res.header('Charset','utf8');
+
+	if(cache.gettables){
+		if(req.query.callback){
+			res.send(req.query.callback + '('+ cache.gettables + ');')
+		}else{
+			res.send(cache.gettables);
+		}
+	}else{
+		request('http://campaign-finance.g0v.ronny.tw/api/gettables', function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				cache.gettables = body;
+				if(req.query.callback){
+					res.send(req.query.callback + '('+ cache.gettables + ');')
+				}else{
+					res.send(cache.gettables);
+				}
+			}else{
+				res.send(req.query.callback + '('+ JSON.stringify({
+					error: 1,
+					message : 'API proxy get a response code of ' + response.statusCode
+				}) + ');');
+			}
+		});
+		setTimeout(function(){ cache.gettables = null; }, 86400*1000/24)
+	}
 };

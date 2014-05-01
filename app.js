@@ -45,7 +45,7 @@ if ('development' == app.get('env')) {
 
 app.get('/?', routes.index);
 app.get('/view/:politician?/:file?/:page?', routes.index);
-app.get('/api/gettables', routes.gettables);
+app.get('/api/gettables', api.gettables);
 app.get('/api/partyInfo/:query', api.partyInfo);
 //app.get('/users', user.list);
 
