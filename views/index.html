@@ -1,53 +1,59 @@
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<meta property="og:title" content="政治獻金數位化計畫，政府無能靠我們救"/>
-	<meta property="og:image" content="http://i.imgur.com/pe4rmGD.png"/>
-	<meta property="og:site_name" content="G0V零時政府後援"/>
+	<meta property="og:title" content="政治獻金數位化計畫，政府無能靠我們救" />
+	<meta property="og:image" content="http://i.imgur.com/pe4rmGD.png" />
+	<meta property="og:site_name" content="G0V零時政府後援" />
 	<meta property="og:description" content="「上次 g0v 黑客松，有 NGO 帶著去監察院申請出來的幾名政治人物的政治獻金的掃描檔，想問問看 g0v 能怎麼做
-	一共有 94 個檔案，將近 2800 頁，包含馬英九、顏清標、吳育昇、丁守中等人的政治獻金的各種收入、支出登記資料......」"/>
+	一共有 94 個檔案，將近 2800 頁，包含馬英九、顏清標、吳育昇、丁守中等人的政治獻金的各種收入、支出登記資料......」" />
 
 	<title>政治獻金資料庫 - 國家自己救</title>
 
-	<% if (request.host != 'localhost'){ %>
-	<script>(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s); js.id = id;
-		js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=221258024717323";
-		fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
+	<% if (request.host !='localhost' ){ %>
+		<script>
+			(function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s);
+				js.id = id;
+				js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=221258024717323";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>
+		<% } %>
 
-	</script>
-	<% } %>
+			<link href="/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
 
-	<link href="/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+			<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+			<script type="text/javascript" src="/js/jquery-migrate-1.2.1.js"></script>
+			<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+			<script type="text/javascript" src="/js/jquery.scrollTo-min.js"></script>
+			<script type="text/javascript">
+				$.widget.bridge('uitooltip', $.ui.tooltip);
+			</script>
+			<script type="text/javascript" src="/js/underscore-min.js"></script>
+			<script type="text/javascript" src="/js/backbone-min.js"></script>
+			<script type="text/javascript" src="/bootstrap/js/bootstrap.js"></script>
+			<script type="text/javascript" src="/js/bootstrap-paginator.js"></script>
+			<script type="text/javascript" src="/js/lackneets.google-spreadsheet.js"></script>
+			<script type="text/javascript" src="/js/app.js"></script>
 
-	<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="/js/jquery-migrate-1.2.1.js"></script>
-	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-	<script type="text/javascript" src="/js/jquery.scrollTo-min.js"></script>
-	<script type="text/javascript"> $.widget.bridge('uitooltip', $.ui.tooltip); </script>
-	<script type="text/javascript" src="/js/underscore-min.js"></script>
-	<script type="text/javascript" src="/js/backbone-min.js"></script>
-	<script type="text/javascript" src="/bootstrap/js/bootstrap.js"></script>
-	<script type="text/javascript" src="/js/bootstrap-paginator.js"></script>
-	<script type="text/javascript" src="/js/lackneets.google-spreadsheet.js"></script>
-	<script type="text/javascript" src="/js/app.js"></script>
+			<script type="text/javascript">
+				$(function () {
+					window.cftable = new CFTable({
+						navigate: '<%- path %>'
+					});
+				})
+			</script>
 
-	<script type="text/javascript">
-	$(function(){ 
-		window.cftable = new CFTable({navigate: '<%- path %>' });
-	})
-	</script>
-
-	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<!-- 
+			<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+			<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.css">
+			<link rel="stylesheet" type="text/css" href="/css/style.css">
+			<!-- 
                                                            `ooo+                                    
                                                            o??!^                                    
                                                           +???-                                     
@@ -84,73 +90,90 @@
                                                                                            
 
                               -->
-                              <script>
-                              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                              	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                              	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			<script>
+				(function (i, s, o, g, r, a, m) {
+					i['GoogleAnalyticsObject'] = r;
+					i[r] = i[r] || function () {
+						(i[r].q = i[r].q || []).push(arguments)
+					}, i[r].l = 1 * new Date();
+					a = s.createElement(o),
+					m = s.getElementsByTagName(o)[0];
+					a.async = 1;
+					a.src = g;
+					m.parentNode.insertBefore(a, m)
+				})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-                              ga('create', 'UA-23775887-3');
-                              ga('send', 'pageview');
-                              </script>
-                          </head>
-                          <body>
-                          	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                          		<div class="container">
-                          			<div class="navbar-header">
-                          				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                          					<span class="sr-only">Toggle navigation</span>
-                          					<span class="icon-bar"></span>
-                          					<span class="icon-bar"></span>
-                          					<span class="icon-bar"></span>
-                          				</button>
-                          				<a class="navbar-brand" style="cursor:pointer"></a>
-                          			</div>
-                          			<div class="collapse navbar-collapse">
-                          				<ul class="nav navbar-nav">
-                          					<!-- <li><a target="_blank" href="http://campaign-finance.g0v.ronny.tw/">資料源 Ronny</a></li> -->
-                          					<li class="dropdown">
-                          						<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">資料源<b class="caret"></b></a>
-                          						<ul class="dropdown-menu">
-                          							<li><a href="http://campaign-finance.g0v.ronny.tw/" target="_blank">Ronny Wang</a></li>
-                          							<li class="divider"></li>
-                          							<li><a href="http://www.ptt.cc/bbs/FuMouDiscuss/M.1397882589.A.B9F.html" target="_blank">g0v黑客松提案！網友合力監督政治獻金</a></li>
-                          						</ul>
-                          					</li>
-                          					<!-- <li><a target="_blank" href="http://campaign-finance.g0v.ctiml.tw/">數位化</a></li> -->
-                          					<li class="dropdown">
-                          						<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">數位化<b class="caret"></b></a>
-                          						<ul class="dropdown-menu">
-                          							<li><a href="http://campaign-finance.g0v.ctiml.tw/" target="_blank">Ctiml</a></li>
-                          							<li class="divider"></li>
-                          							<li><a href="http://campaign-finance.g0v.ctiml.tw/cell" target="_blank">+1鍵盤手</a></li>
-                          							<li><a href="http://bit.ly/PoliticalContribution" target="_blank">參戰須知</a></li>
-                          							<li><a href="http://bit.ly/CYsunshinetodo" target="_blank">認領任務</a></li>
-                          							<li><a href="http://bit.ly/UploadPoliticalContribution" target="_blank">上船圖檔</a></li>
-                          							<li><a href="http://bit.ly/ScanPoliticalContribution" target="_blank">處理現況</a></li>
-                          						</ul>
-                          					</li>
+				ga('create', 'UA-23775887-3');
+				ga('send', 'pageview');
+			</script>
+</head>
 
-
-                          				</ul>
-                          				<ul class="nav navbar-nav navbar-right">
-                          					<li class="visible-sm visible-md visible-lg" style="margin-top:3px" title="總建檔資料格數">
-                          						<a href="http://campaign-finance.g0v.ctiml.tw/cell" target="_blank"><span class="label label-success" id="counter">-</span></a>
-                          					</li>
-                          					<li title="Fork me on Github">
-                          						<a target="_blank" href="https://github.com/lackneets/campaign-finance" alt="Fork me on Github">
-                          							<img src="http://www.iconsdb.com/icons/download/color/CCCCCC/github-11-24.png" style="height:20px"/>
-                          							<span class="hidden-sm hidden-md hidden-lg">Fork me on Github </span>
-                          						</a>
-                          					</li>
-                          				</ul>
-
-                          			</div><!--/.nav-collapse -->
-                          		</div>
-                          	</div>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="/" class="navbar-brand" style="cursor:pointer"></a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<!-- <li><a target="_blank" href="http://campaign-finance.g0v.ronny.tw/">資料源 Ronny</a></li> -->
+					<li class="dropdown">
+						<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">資料源<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="http://campaign-finance.g0v.ronny.tw/" target="_blank">Ronny Wang</a>
+							</li>
+							<li class="divider"></li>
+							<li><a href="http://www.ptt.cc/bbs/FuMouDiscuss/M.1397882589.A.B9F.html" target="_blank">g0v黑客松提案！網友合力監督政治獻金</a>
+							</li>
+						</ul>
+					</li>
+					<!-- <li><a target="_blank" href="http://campaign-finance.g0v.ctiml.tw/">數位化</a></li> -->
+					<li class="dropdown">
+						<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">數位化<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="http://campaign-finance.g0v.ctiml.tw/" target="_blank">Ctiml</a>
+							</li>
+							<li class="divider"></li>
+							<li><a href="http://campaign-finance.g0v.ctiml.tw/cell" target="_blank">+1鍵盤手</a>
+							</li>
+							<li><a href="http://bit.ly/PoliticalContribution" target="_blank">參戰須知</a>
+							</li>
+							<li><a href="http://bit.ly/CYsunshinetodo" target="_blank">認領任務</a>
+							</li>
+							<li><a href="http://bit.ly/UploadPoliticalContribution" target="_blank">上船圖檔</a>
+							</li>
+							<li><a href="http://bit.ly/ScanPoliticalContribution" target="_blank">處理現況</a>
+							</li>
+						</ul>
+					</li>
 
 
-                          	<div class="container">
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="visible-sm visible-md visible-lg" style="margin-top:3px" title="總建檔資料格數">
+						<a href="http://campaign-finance.g0v.ctiml.tw/cell" target="_blank"><span class="label label-success" id="counter">-</span></a>
+					</li>
+					<li title="Fork me on Github">
+						<a target="_blank" href="https://github.com/lackneets/campaign-finance" alt="Fork me on Github">
+							<img src="http://www.iconsdb.com/icons/download/color/CCCCCC/github-11-24.png" style="height:20px" />
+							<span class="hidden-sm hidden-md hidden-lg">Fork me on Github </span>
+						</a>
+					</li>
+				</ul>
+
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>
+
+
+	<div class="container">
 
 
 		<!-- <div class="Jumbotron">
@@ -164,14 +187,15 @@
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 			本站政治獻金資料收集僅供學術交流使用，嚴禁營利、徵信，或其他不正當目的之使用
 		</div>
-		
+
 		<div id="loading" class="text-center">
-			<img src="/images/loading_icon.gif"><p></p>
+			<img src="/images/loading_icon.gif">
+			<p></p>
 			<img src="/images/money_fly.gif" style="width: 200px; height: auto;">
-			
-		</div>	
+
+		</div>
 		<div class="row" id="main" style="display:none;">
-			
+
 			<div class="col-sm-3">
 				<div class="sidebar-nav" id="politician">
 					<div class="navbar navbar-default" role="navigation">
@@ -186,15 +210,18 @@
 						</div>
 						<div class="navbar-collapse collapse sidebar-navbar-collapse">
 							<ul class="nav navbar-nav">
-								<li class="template"><a style="cursor: pointer;">Menu Item 1</a></li>
+								<li class="template"><a style="cursor: pointer;">Menu Item 1</a>
+								</li>
 								<li class="dropdown template">
 									<a style="cursor: pointer;" class="dropdown-toggle" data-toggle="dropdown">馬英九 <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li><a href="">匿名捐贈</a></li>
+										<li><a href="">匿名捐贈</a>
+										</li>
 									</ul>
 								</li>
 							</ul>
-						</div><!--/.nav-collapse -->
+						</div>
+						<!--/.nav-collapse -->
 					</div>
 				</div>
 			</div>
@@ -208,13 +235,13 @@
 						<h2 class="hidden-xs">
 							<i class="fa fa-arrow-left"></i> 選取左邊的政治人物來看看
 						</h2>
-						
+
 					</div>
 
 					<div style="overflow:hidden; height:300px; border-radius:3px; border:1px solid #eee; background: #FFF;">
 						<iframe src="http://campaign-finance.g0v.ctiml.tw/cell" style="border:none; width:100%;height:320px;overflow:hidden;padding:0 10px;"></iframe>
 					</div>
-					
+
 
 					<div class="panel panel-default template">
 						<div class="panel-heading">
@@ -232,9 +259,9 @@
 							</div>
 						</div>
 					</div>
-				</div>	
+				</div>
 			</div>
-		</div> 
+		</div>
 
 		<hr>
 
@@ -245,11 +272,12 @@
 		<div id="fb-root"></div>
 
 
-
-	</div><!-- /.container -->
+	</div>
+	<!-- /.container -->
 
 	<p></p>
 
 
 </body>
+
 </html>
