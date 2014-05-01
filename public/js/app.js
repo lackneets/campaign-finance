@@ -322,6 +322,8 @@ var CFTable = Backbone.View.extend(
 			},
 			pushState: function () {
 				this.getCurrentPath() && history.pushState(this.state, '', '/view' + this.getCurrentPath());
+				this.getCurrentPath() && ga && ga('send', 'pageview', this.getCurrentPath());
+				// https://developers.google.com/analytics/devguides/collection/analyticsjs/pages
 			},
 			getCurrentPath: function () {
 				var path = '';
