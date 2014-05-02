@@ -206,7 +206,7 @@ var CFTable = Backbone.View.extend(
 
 			(function renew() {
 				CFinance.getTotalCount(function (total, done, remains) {
-					var percent = Math.ceil(done * 100 / total) + '%';
+					var percent = Math.floor(done * 100 / total) + '%';
 					var count = done;
 					clearInterval(timer);
 					if (history) {
